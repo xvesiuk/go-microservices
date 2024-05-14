@@ -1,0 +1,128 @@
+basePath: /api/v1
+definitions:
+  posthandler.postMutationBody:
+    properties:
+      content:
+        maxLength: 300
+        type: string
+      title:
+        maxLength: 50
+        type: string
+    required:
+    - content
+    - title
+    type: object
+  posthandler.postMutationResponse:
+    properties:
+      id:
+        type: integer
+    type: object
+  posthandler.postQueryResponse:
+    properties:
+      author_id:
+        type: integer
+      content:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  rest.Response-posthandler_postMutationResponse:
+    properties:
+      data:
+        $ref: '#/definitions/posthandler.postMutationResponse'
+      error:
+        type: boolean
+      msg:
+        type: string
+    type: object
+  rest.Response-posthandler_postQueryResponse:
+    properties:
+      data:
+        $ref: '#/definitions/posthandler.postQueryResponse'
+      error:
+        type: boolean
+      msg:
+        type: string
+    type: object
+  rest.ResponseDefault:
+    properties:
+      error:
+        type: boolean
+      msg:
+        type: string
+    type: object
+host: localhost:8001
+info:
+  contact: {}
+  description: This is a sample server celler server.
+  title: Swagger Example API
+  version: "1.0"
+paths:
+  /post:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: post payload
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/posthandler.postMutationBody'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/rest.Response-posthandler_postMutationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/rest.ResponseDefault'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/rest.ResponseDefault'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/rest.ResponseDefault'
+      tags:
+      - post
+  /post/{postID}:
+    get:
+      parameters:
+      - description: post id
+        in: path
+        name: postID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/rest.Response-posthandler_postQueryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/rest.ResponseDefault'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/rest.ResponseDefault'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/rest.ResponseDefault'
+      tags:
+      - post
+swagger: "2.0"
